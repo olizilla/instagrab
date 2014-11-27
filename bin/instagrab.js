@@ -29,6 +29,12 @@ const opts = require('nomnom')
   })
   .parse()
 
+if (opts.url) return console.log(instagrab.url(opts.shortcode, opts.size))
+
+if (typeof opts.shortcode === 'String') {
+  opts.shortcode = [opts.shortcode]
+}
+
 if (!opts.silent) console.log(multiline(function(){/*
 
  _ _|                  |                                    |
@@ -39,11 +45,6 @@ if (!opts.silent) console.log(multiline(function(){/*
 
 */}))
 
-if (opts.url) return console.log(instagrab.url(opts.shortcode, opts.size))
-
-if (typeof opts.shortcode === 'String') {
-  opts.shortcode = [opts.shortcode]
-}
 opts.shortcode.forEach(function (shortcode) {
   instagrab(shortcode, opts.size, function (err, res){
     if(err) return console.error(err.message || err)
