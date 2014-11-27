@@ -78,6 +78,7 @@ function grab (shortcode, size, cb) {
     .end(function(err, res) {
       // why .pipe no work?
       if (err) return cb(err, res)
+      if (res.error) return cb(res.error, res)
       toFile.write(res.body, cb)
     })
 }

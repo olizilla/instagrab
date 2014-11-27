@@ -1,16 +1,5 @@
 #!/usr/bin/env node
 
-/*
-
- _ _|                  |                                    |
-   |    __ \     __|   __|    _` |    _` |    __|    _` |   __ \
-   |    |   |  \__ \   |     (   |   (   |   |      (   |   |   |
- ___|  _|  _|  ____/  \__|  \__,_|  \__, |  _|     \__,_|  _.__/
-                                    |___/
-
-        Grab the goods from your filtered image service provider.
-*/
-
 const instagrab = require('../index.js')
 const multiline = require('multiline')
 const opts = require('nomnom')
@@ -57,7 +46,7 @@ if (typeof opts.shortcode === 'String') {
 }
 opts.shortcode.forEach(function (shortcode) {
   instagrab(shortcode, opts.size, function (err, res){
-    if(err) return console.err(err)
+    if(err) return console.error(err.message || err)
     if (!opts.silent) console.log('grabbed: ', instagrab.filename(shortcode, opts.size))
   })
 })
