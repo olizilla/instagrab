@@ -8,34 +8,37 @@ const opts = require('nomnom')
     shortcode: {
       required:true,
       position: 0,
-      help: "instagram shortcodes",
+      help: "1 or more instagram shortcodes to grab",
       list: true
-    },
-    size: {
-      abbr: 's',
-      choices: ['s', 'm', 'l'],
-      help: 'image size',
-      'default':'l'
     },
     url: {
       flag:true,
-      help: 'just pring the url for the shortcode'
+      help: 'just print the url for the shortcode'
     },
-    silent: {
+    size: {
       abbr: 's',
-      help: 'don\'t be logging',
+      choices: ['t', 'm', 'l'],
+      help: 'image size: (t)humb, (m)edium, (l)arge',
+      'default':'l'
+    },
+    quiet: {
+      abbr: 'q',
+      help: 'don\'t fill mah logs with junk ya kids.',
       flag: true
     }
   })
-  .parse()
+  .nocolors()
+  .nom()
 
-if (opts.url) return console.log(instagrab.url(opts.shortcode, opts.size))
+if (opts.url) return instagrab.resolveUrl(opts.shortcode, opts.size, function (err, url) {
+  console.log(err || url)
+})
 
 if (typeof opts.shortcode === 'String') {
   opts.shortcode = [opts.shortcode]
 }
 
-if (!opts.silent) console.log(multiline(function(){/*
+if (!opts.quiet) console.log(multiline(function(){/*
 
  _ _|                  |                                    |
    |    __ \     __|   __|    _` |    _` |    __|    _` |   __ \
@@ -48,7 +51,7 @@ if (!opts.silent) console.log(multiline(function(){/*
 opts.shortcode.forEach(function (shortcode) {
   instagrab(shortcode, opts.size, function (err, res){
     if(err) return console.error(err.message || err)
-    if (!opts.silent) console.log('grabbed: ', instagrab.filename(shortcode, opts.size))
+    if (!opts.quiet) console.log('grabbed: ', instagrab.filename(shortcode, opts.size))
   })
 })
 
