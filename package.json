@@ -2,7 +2,7 @@
   "name": "instagrab",
   "version": "0.1.0",
   "description": "Grab photos from instagram",
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/olizilla/instagrab"
   },
@@ -13,12 +13,11 @@
   "author": "olizilla",
   "license": "ISC",
   "dependencies": {
-    "multiline": "^1.0.1",
-    "nomnom": "^1.8.1",
-    "superagent": "~0.21.0"
+    "multiline": "~1.0.1",
+    "nomnom": "~1.8.1",
+    "request": "~2.48.0"
   },
   "devDependencies": {
-    "checksum": "~0.1.1",
     "tape": "~3.0.3",
     "valid-url": "~1.0.9"
   }

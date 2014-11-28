@@ -1,25 +1,25 @@
+/* Tests for ../index.js */
 var instagrab = require('../index.js')
 var test = require('tape')
-var path = require('path')
 var valid = require('valid-url')
-var checksum = require('checksum')
+var crypto = require('crypto');
 
-test('url for shortcode', function (t) {
+test('API URL for shortcode', function (t) {
   t.plan(4)
 
-  var url = instagrab.url('vO9hvHpxuH', 'l')
+  var url = instagrab.apiUrl('vO9hvHpxuH', 'l')
   t.equal('http://instagram.com/p/vO9hvHpxuH/media/?size=l', url)
 
-  url = instagrab.url('woohaa', 's')
+  url = instagrab.apiUrl('woohaa', 's')
   t.equal('http://instagram.com/p/woohaa/media/?size=s', url)
 
-  url = instagrab.url('largeAllTheThings')
+  url = instagrab.apiUrl('largeAllTheThings')
   t.equal('http://instagram.com/p/largeAllTheThings/media/?size=l', url)
 
-  t.throws(instagrab.url)
+  t.throws(instagrab.apiUrl)
 })
 
-test('filename for shortcode', function (t) {
+test('Filename for shortcode', function (t) {
   t.plan(4)
 
   var filename = instagrab.filename('vO9hvHpxuH', 'l')
@@ -34,21 +34,25 @@ test('filename for shortcode', function (t) {
   t.throws(instagrab.filename)
 })
 
-test('resolvedUrl for shortcode', function (t) {
+test('Resolved URL for shortcode', function (t) {
   t.plan(2)
-  var url = instagrab.resolveUrl('vO9hvHpxuH', 'l', function (err, url) {
+  var url = instagrab.url('vO9hvHpxuH', 'l', function (err, url) {
     t.false(err)
     t.ok(valid.isUri(url), url + ' should be a valid url')
   })
 })
 
-test('grab image for shortcode', function (t) {
-  t.plan(2)
-  instagrab('vO9hvHpxuH', 'l', function (err, url) {
-    t.false(err)
-    var photo = path.join(process.cwd(), instagrab.filename('vO9hvHpxuH','l'))
-    checksum.file(photo, function (err, sha1) {
-      t.equals('75e3828d918496b268155ad6ba5290b391aad371', sha1, 'expected file hash to match')
+test('Grab image for shortcode', function (t) {
+  t.plan(1)
+
+  var hash = crypto.createHash('sha1');
+  hash.setEncoding('hex');
+
+  instagrab('vO9hvHpxuH', 'l')
+    .on('error', function (err) {t.error(err)})
+    .on('end', function(err) {
+      hash.end();
+      t.equals('75e3828d918496b268155ad6ba5290b391aad371', hash.read(), 'expected file hash to match')
     })
-  })
+    //var photo = path.join(process.cwd(), instagrab.filename('vO9hvHpxuH','l'))
 })
