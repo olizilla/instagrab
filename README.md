@@ -9,6 +9,8 @@
 
 **Grab the good bits back from the insta-blob.**
 
+A module and command line tool for downloading images from instagram
+
 ## Install globally
 
 ```shell
