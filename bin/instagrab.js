@@ -105,31 +105,36 @@ function grabImages (opts) {
 
   opts.shortcode.forEach(function (shortcode) {
     // set up the sink
-    var filepath = path.join(process.cwd(), instagrab.filename(shortcode, opts.size))
+    var filename = instagrab.filename(shortcode, opts.size)
+    var filepath = path.join(process.cwd(), filename)
     var toFile = fs.createWriteStream(filepath)
-    toFile.on('error', onSaveError.bind(opts))
-    toFile.on('finish', onSaved.bind(opts))
+    toFile.on('error', onSaveError(shortcode))
+    toFile.on('finish', function onSaved () {
+      if (this.quiet) return;
+      console.log('grabbed: ', filename)
+    })
 
     // grab the bits
     return instagrab(shortcode, opts.size)
-      .on('error', onGrabError.bind(opts))
+      .on('error', onGrabError(shortcode))
       .pipe(toFile)
   })
 }
 
-function onGrabError (err) {
-  console.error('Failed to grab', this.shortcode)
-  console.error(err.message || err)
-  process.exit(1)
+function onGrabError (shortcode) {
+  return function (err) {
+    console.error('Failed to grab', shortcode)
+    console.error(err.message || err)
+    process.exit(1)
+  }
 }
 
-function onSaveError (err) {
-  console.error('Failed to save', this.shortcode)
-  console.error(err.message || err)
-  process.exit(2)
+function onSaveError (shortcode) {
+  return function (err) {
+    console.error('Failed to save', shortcode)
+    console.error(err.message || err)
+    process.exit(2)
+  }
 }
 
-function onSaved () {
-  if (this.quiet) return;
-  console.log('grabbed: ', instagrab.filename(this.shortcode, this.size))
-}
+

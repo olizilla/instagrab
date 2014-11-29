@@ -1,7 +1,16 @@
 {
   "name": "instagrab",
-  "version": "0.1.0",
-  "description": "Grab photos from instagram",
+  "version": "1.0.0",
+  "description": "Download photos from instagram",
+  "tags": [
+    "instagram",
+    "download",
+    "image"
+  ],
+  "author": {
+    "name": "olizilla",
+    "email": "oli@zilla.org.uk"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/olizilla/instagrab"
@@ -10,7 +19,6 @@
   "scripts": {
     "test": "node tests/testIndex.js"
   },
-  "author": "olizilla",
   "license": "ISC",
   "dependencies": {
     "multiline": "~1.0.1",
@@ -18,6 +26,7 @@
     "request": "~2.48.0"
   },
   "devDependencies": {
+    "concat-stream": "~1.4.7",
     "tape": "~3.0.3",
     "valid-url": "~1.0.9"
   }

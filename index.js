@@ -27,6 +27,7 @@
   For Mum. xx
 */
 
+const url = require('url')
 const util = require('util')
 const http = require('http')
 const request = require('request')
@@ -63,10 +64,21 @@ function resolvedUrlFor (shortcode, size, cb) {
   cb = cb || function () {}
 
   var apiUrl = apiUrlFor(shortcode, size)
-  http.get(apiUrl, function (res) {
+
+  var opts = url.parse(apiUrl)
+  // http requests use the global Agent (connection pool) and defaults to `Connection: keep-alive`
+  // This causes the test suite to hang, so we explicitly set it to close.
+  // Alternatively, set `opts.agent: false` to opt out of connection pool and default to `Connection: close`
+  // see: http://nodejs.org/api/http.html#http_http_request_options_callback
+  opts.headers = {
+    Connection:'close'
+  }
+
+  http.get(opts, function (res) {
     var url = res && res.headers && res.headers.location
     if (!url) return cb(new Error('Couldn\'t get url; no `location` header on response'), res)
-    return cb(null, url)
+    cb(null, url)
+
   }).on('error', cb)
 }
 
