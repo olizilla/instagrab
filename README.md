@@ -22,7 +22,7 @@ If at first you don't succeed, [`sudo` make me a sandwich](http://xkcd.com/149/)
 ## Grab images
 
 ```shell
- instagrab vO9hvHpxuH ulMpTsPaEn
+ instagrab vO9hvHpxuH
 ```
 
 Will dig out the the image for shortcode [`vO9hvHpxuH`](http://instagram.com/p/vO9hvHpxuH/) and bismirch your storage with a regular instangle like so
@@ -34,7 +34,6 @@ Will dig out the the image for shortcode [`vO9hvHpxuH`](http://instagram.com/p/v
 Rather curl and pipe your own bits? No worries.
 
 ```shell
-
  instagrab --url ulMpTsPaEn
  http://photos-a.ak.instagram.com/hphotos-ak-xfp1/10727611_525504890919008_1579977286_n.jpg
 
