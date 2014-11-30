@@ -1,6 +1,6 @@
 {
   "name": "instagrab",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Download photos from instagram",
   "tags": [
     "instagram",
@@ -18,6 +18,9 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests/testIndex.js"
+  },
+  "bin": {
+    "instagrab": "bin/instagrab.js"
   },
   "license": "ISC",
   "dependencies": {
